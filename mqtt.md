@@ -62,7 +62,7 @@ Eyes runs one YOLO + depth (+ Fast-SCNN for `traverse`) pass and publishes `robo
 | `costmap` | Compact BEV for planners (`rle` pairs `[value, run]`) |
 | `hint` | One-line English for LLM / UI |
 
-**brain** (with `mqtt.capture_before_reply: true`) requests a capture before each reply, then turns the scene into: `Vision: <hint> | Objects: …` on the system prompt.
+**brain** requests a capture only when the user utterance is about seeing the room (or when `mqtt.capture_before_reply: true`). It injects compact `CameraJSON` into the system prompt; object names stay English and must be translated when spoken.
 
 **mcp** tool `capture_scene` publishes the same capture request and returns the matching scene; `get_scene` only reads the cache.
 

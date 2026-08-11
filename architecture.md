@@ -42,7 +42,7 @@ flowchart TB
 
 ### brain
 - Voice orchestrator (Parakeet STT, llama.cpp Gemma, Piper TTS).
-- When `mqtt.vision_enabled` is true, owns the vision loop: before each reply (if `capture_before_reply`), publishes `robot/nav/capture`, waits for `robot/nav/scene`, and appends a `Vision:` line to the LLM system prompt.
+- When `mqtt.vision_enabled` is true, owns the vision loop: if the user prompt needs seeing (or `capture_before_reply` is true), publishes `robot/nav/capture`, waits for `robot/nav/scene`, and appends `CameraJSON` to the LLM system prompt. Object labels are English and must be translated to the spoken language.
 - Uses the **same MQTT capture contract** as MCP tools (brain does not need Cursor).
 - Does **not** command motors yet (persona says it cannot drive alone).
 

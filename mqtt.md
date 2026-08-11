@@ -99,7 +99,7 @@ See [drive README](https://github.com/smart-puppet/drive) for UART mapping and F
 |-------|------------|-----------|
 | `robot/nav/capture` | brain, mcp, tests | eyes |
 | `robot/nav/scene` | eyes | brain, mcp, future planner |
-| `robot/drive/cmd` | eyes pad, drive pad, mcp (gated), future planner | drive bridge |
+| `robot/drive/cmd` | eyes pad, drive pad, mcp (gated), **brain face-speaker** | drive bridge |
 | `robot/drive/stop` | any UI / mcp | drive bridge |
 | `robot/drive/status` | drive bridge | eyes UI, mcp |
 

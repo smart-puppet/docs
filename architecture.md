@@ -43,6 +43,7 @@ flowchart TB
 ### brain
 - Voice orchestrator (Parakeet STT, llama.cpp Gemma, Piper TTS).
 - When `mqtt.vision_enabled` is true, owns the vision loop: if the user prompt needs seeing (or `capture_before_reply` is true), publishes `robot/nav/capture`, waits for `robot/nav/scene`, and appends `CameraJSON` to the LLM system prompt. Object labels are English and must be translated to the spoken language.
+- With ReSpeaker `face_speaker: true`, latches DoA while the child speaks and publishes a one-shot `turn_left`/`turn_right` on `robot/drive/cmd` so the chassis faces them (~60° DoA = front).
 - Uses the **same MQTT capture contract** as MCP tools (brain does not need Cursor).
 - Does **not** command motors yet (persona says it cannot drive alone).
 

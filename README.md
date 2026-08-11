@@ -11,9 +11,9 @@ Shared documentation for the [smart-puppet](https://github.com/smart-puppet) sta
 
 | Repo | Role |
 |------|------|
-| [eyes](https://github.com/smart-puppet/eyes) | Perception — camera, YOLO, depth, floor seg → scene |
+| [eyes](https://github.com/smart-puppet/eyes) | Perception — on-demand capture → scene |
 | [drive](https://github.com/smart-puppet/drive) | Locomotion — MQTT ↔ UART ↔ MCU |
-| [brain](https://github.com/smart-puppet/brain) | Conversation — STT / LLM / TTS (package name `puppet`) |
-| [mcp](https://github.com/smart-puppet/mcp) | Agent facade — Cursor MCP tools over MQTT |
+| [brain](https://github.com/smart-puppet/brain) | Conversation — STT / LLM / TTS; requests captures |
+| [mcp](https://github.com/smart-puppet/mcp) | Agent tool facade over MQTT |
 
 Realtime traffic uses **Mosquitto**. Modules do not call each other over HTTP in production.

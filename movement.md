@@ -50,7 +50,7 @@ Eyes still infers **on demand**. Follow rate is “as fast as one capture” (of
 | Mode | Voice | Motion |
 |------|-------|--------|
 | **follow** | Kid asks to come / follow; Gemma adds `<<follow>>` | Turn toward YOLO `person` bearing; roll forward if centered and far; stop at `stop_m` |
-| **seek** | Kid asks for hide-and-seek; Gemma adds `<<seek>>` | Turn in place until a person appears, then follow until `found_m`, then idle |
+| **seek** | Kid asks for hide-and-seek; Gemma adds `<<seek>>` | Turn in place until a person appears, then follow until `found_m`, then idle and say “found you”. Never roll toward last voice while lost. After `seek_giveup_ticks` with no person, idle and say it gave up. |
 | **idle** | Kid asks to stop; Gemma adds `<<stop>>` | Soft stop (`idle`), no estop latch |
 | **back** | Kid asks to reverse; Gemma adds `<<back>>` | One `backward` nudge, then idle |
 
@@ -100,6 +100,7 @@ An adult should stay in the room. This is a kid robot, not a warehouse AGV.
 | `follow.backward_dur_ms` | `500` | Length of one reverse nudge |
 | `follow.turn_dur_ms` | `280` | Length of a bearing correction |
 | `follow.found_m` | `1.15` | Seek → “found” idle |
+| `follow.seek_giveup_ticks` | `24` | Seek → idle if no person for this many captures |
 
 Disable without code changes: `play.allow_motion: false` or `play.enabled: false`.
 
@@ -107,9 +108,9 @@ Disable without code changes: `play.allow_motion: false` or `play.enabled: false
 
 ### Step 2 — richer seek / found speech
 
-- Spoken “found you!” when seek idles (today the robot just stops; status reason is `found`)
-- Count-out loud before seeking
+- Count-out loud before seeking (today seek starts with Gemma’s reply only)
 - Ignore the adult operator vs the hiding child (multi-person)
+- LLM-generated “found you” instead of the canned Piper line
 
 ### Step 3 — robot hides
 

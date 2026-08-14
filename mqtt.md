@@ -62,9 +62,31 @@ Eyes runs one YOLO + depth (+ Fast-SCNN for `traverse`) pass and publishes `robo
 | `costmap` | Compact BEV for planners (`rle` pairs `[value, run]`) |
 | `hint` | One-line English for LLM / UI |
 
-**brain** requests a capture only when the user utterance is about seeing the room (or when `mqtt.capture_before_reply: true`). It injects compact `CameraJSON` into the system prompt; object names stay English and must be translated when spoken.
+**brain** injects compact cached `CameraJSON` into the system prompt (object names stay English and must be translated when spoken). Gemma emits `<<look>>` when it needs a fresh capture. `mqtt.capture_before_reply: true` still captures before every reply.
 
 **mcp** tool `capture_scene` publishes the same capture request and returns the matching scene; `get_scene` only reads the cache.
+
+## Play (`brain` play supervisor)
+
+Prefix: `robot/play`.
+
+| Topic | Direction | Description |
+|-------|-----------|-------------|
+| `robot/play/cmd` | voice / mcp / tests → brain | Start or stop a behavior |
+| `robot/play/status` | brain → bus | Last mode, nudge, person range |
+
+```json
+{ "mode": "follow" }
+```
+
+`mode` is `follow` | `seek` | `idle` | `back` (`stop` is accepted as idle; `back` is one reverse nudge). See [movement.md](movement.md).
+
+## Debug logs
+
+| Topic | Direction | Description |
+|-------|-----------|-------------|
+| `robot/log/brain` | brain → eyes debug UI | JSON log lines (`ts`, `level`, `logger`, `msg`) |
+| `robot/log/drive` | drive bridge → eyes debug UI | JSON log lines (UART send, MQTT recv) |
 
 ## Drive (`clients` ↔ `drive`)
 
@@ -98,8 +120,12 @@ See [drive README](https://github.com/smart-puppet/drive) for UART mapping and F
 | Topic | Publishers | Consumers |
 |-------|------------|-----------|
 | `robot/nav/capture` | brain, mcp, tests | eyes |
-| `robot/nav/scene` | eyes | brain, mcp, future planner |
-| `robot/drive/cmd` | eyes pad, drive pad, mcp (gated), **brain face-speaker** | drive bridge |
+| `robot/nav/scene` | eyes | brain, mcp, play supervisor |
+| `robot/play/cmd` | brain voice, mcp | brain play supervisor |
+| `robot/play/status` | brain | mcp, logs, eyes debug UI |
+| `robot/log/brain` | brain | eyes debug web |
+| `robot/log/drive` | drive bridge | eyes debug web |
+| `robot/drive/cmd` | eyes pad, drive pad, mcp (gated), **brain face-speaker**, **brain play** | drive bridge |
 | `robot/drive/stop` | any UI / mcp | drive bridge |
 | `robot/drive/status` | drive bridge | eyes UI, mcp |
 
@@ -108,4 +134,4 @@ See [drive README](https://github.com/smart-puppet/drive) for UART mapping and F
 - Prefer short `dur>0` nudges from agents; leave `ROBOT_MCP_ALLOW_MOTION` unset/`0` unless intentionally enabling.
 - `drive_stop` / `robot/drive/stop` is always allowed from mcp.
 - Scene hints are advisory; Cityscapes floor labels can under-detect apartment floors.
-- Capture is on-demand (not continuous inference) so GPU stays idle between requests.
+- Capture is on-demand (not continuous inference) so GPU stays idle between requests. Play follow requests a capture **per tick** while a game is running, then idles the GPU again.

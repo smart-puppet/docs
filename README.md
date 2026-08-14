@@ -6,6 +6,7 @@ Shared documentation for the [smart-puppet](https://github.com/smart-puppet) sta
 |-----|----------|
 | [architecture.md](architecture.md) | Modules, roles, data flow |
 | [mqtt.md](mqtt.md) | Topic contracts (`robot/*`) |
+| [movement.md](movement.md) | Follow, obstacles, hide-and-seek (step-by-step) |
 
 ## Modules at a glance
 

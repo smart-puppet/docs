@@ -133,4 +133,3 @@ Disable without code changes: `play.allow_motion: false` or `play.enabled: false
 | `brain/src/puppet/play/actions.py` | Parse hidden `<<follow>>` / `<<back>>` / `<<look>>` tags from Gemma |
 | `brain/src/puppet/play/supervisor.py` | Capture loop + MQTT cmd/status |
 | `brain/src/puppet/mqtt/drive.py` | `nudge` / `idle` / `estop` |
-| `mcp/server.py` | `play_cmd` / `play_stop` tools |

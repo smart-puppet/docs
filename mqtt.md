@@ -8,8 +8,8 @@ All robot topics use the `robot/` prefix. Payload encoding is **JSON UTF-8** unl
 
 | Topic | Direction | QoS | Description |
 |-------|-----------|-----|-------------|
-| `robot/nav/capture` | brain / mcp / debug → eyes | 1 | Request one perception capture |
-| `robot/nav/scene` | eyes → brain + mcp | 0–1 | Traversability summary + hint |
+| `robot/nav/capture` | brain / debug → eyes | 1 | Request one perception capture |
+| `robot/nav/scene` | eyes → brain | 0–1 | Traversability summary + hint |
 
 ### `robot/nav/capture` payload
 
@@ -64,15 +64,13 @@ Eyes runs one YOLO + depth (+ Fast-SCNN for `traverse`) pass and publishes `robo
 
 **brain** injects compact cached `CameraJSON` into the system prompt (object names stay English and must be translated when spoken). Gemma emits `<<look>>` when it needs a fresh capture. `mqtt.capture_before_reply: true` still captures before every reply.
 
-**mcp** tool `capture_scene` publishes the same capture request and returns the matching scene; `get_scene` only reads the cache.
-
 ## Play (`brain` play supervisor)
 
 Prefix: `robot/play`.
 
 | Topic | Direction | Description |
 |-------|-----------|-------------|
-| `robot/play/cmd` | voice / mcp / tests → brain | Start or stop a behavior |
+| `robot/play/cmd` | voice / tests → brain | Start or stop a behavior |
 | `robot/play/status` | brain → bus | Last mode, nudge, person range |
 
 ```json
@@ -119,19 +117,18 @@ See [drive README](https://github.com/smart-puppet/drive) for UART mapping and F
 
 | Topic | Publishers | Consumers |
 |-------|------------|-----------|
-| `robot/nav/capture` | brain, mcp, tests | eyes |
-| `robot/nav/scene` | eyes | brain, mcp, play supervisor |
-| `robot/play/cmd` | brain voice, mcp | brain play supervisor |
-| `robot/play/status` | brain | mcp, logs, eyes debug UI |
+| `robot/nav/capture` | brain, tests | eyes |
+| `robot/nav/scene` | eyes | brain, play supervisor |
+| `robot/play/cmd` | brain voice | brain play supervisor |
+| `robot/play/status` | brain | logs, eyes debug UI |
 | `robot/log/brain` | brain | eyes debug web |
 | `robot/log/drive` | drive bridge | eyes debug web |
-| `robot/drive/cmd` | eyes pad, drive pad, mcp (gated), **brain face-speaker**, **brain play** | drive bridge |
-| `robot/drive/stop` | any UI / mcp | drive bridge |
-| `robot/drive/status` | drive bridge | eyes UI, mcp |
+| `robot/drive/cmd` | eyes pad, drive pad, **brain face-speaker**, **brain play** | drive bridge |
+| `robot/drive/stop` | any UI | drive bridge |
+| `robot/drive/status` | drive bridge | eyes UI |
 
 ## Safety notes
 
-- Prefer short `dur>0` nudges from agents; leave `ROBOT_MCP_ALLOW_MOTION` unset/`0` unless intentionally enabling.
-- `drive_stop` / `robot/drive/stop` is always allowed from mcp.
+- Prefer short `dur>0` nudges.
 - Scene hints are advisory; Cityscapes floor labels can under-detect apartment floors.
 - Capture is on-demand (not continuous inference) so GPU stays idle between requests. Play follow requests a capture **per tick** while a game is running, then idles the GPU again.

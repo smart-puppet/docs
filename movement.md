@@ -6,7 +6,7 @@ This is **step 1** of a longer roadmap. Later steps are listed at the end so we 
 
 ## Bring-up
 
-Same order as [architecture.md](architecture.md), plus play enabled in brain:
+Same order as [architecture.md](architecture.md), plus play enabled in brain. On the robot, use [systemd.md](systemd.md) (`puppet.target`; drive bridge starts first).
 
 1. Mosquitto
 2. **drive** host bridge (MCU on UART)

@@ -1,0 +1,8 @@
+[Unit]
+Description=Puppet robot stack
+Documentation=https://github.com/smart-puppet/docs/blob/main/systemd.md
+After=mosquitto.service puppet-drive.service
+Wants=mosquitto.service puppet-drive.service puppet-eyes.service puppet-brain.service
+
+[Install]
+WantedBy=multi-user.target

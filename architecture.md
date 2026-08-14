@@ -50,9 +50,11 @@ Realtime traffic is **MQTT** (Mosquitto). Modules do not call each other over HT
 ## Typical bring-up order
 
 1. `mosquitto` (system service).
-2. `drive` host bridge (MCU on UART).
+2. `drive` host bridge (MCU on UART) — **must be up before eyes/brain**.
 3. `eyes` debug web (listens for `robot/nav/capture`; Capture button also works).
 4. `brain` (`puppet --config config/`) — talks with the child; Gemma tags start look / follow / seek.
+
+On the Jetson, [systemd.md](systemd.md) installs this order as `puppet.target` (`puppet-drive` starts first).
 
 ## Out of scope (later steps)
 

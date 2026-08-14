@@ -1,0 +1,16 @@
+[Unit]
+Description=mDNS alias puppet.local
+Documentation=https://github.com/smart-puppet/docs/blob/main/systemd.md
+After=network-online.target avahi-daemon.service
+Wants=network-online.target
+Requires=avahi-daemon.service
+PartOf=puppet.target
+
+[Service]
+Type=simple
+ExecStart=/home/cvincent/Projects/01-Puppet/docs/deploy/systemd/publish-puppet-mdns.sh
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=puppet.target

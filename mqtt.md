@@ -27,7 +27,7 @@ All robot topics use the `robot/` prefix. Payload encoding is **JSON UTF-8** unl
 | `view` | `traverse` (default, publishes scene) or `boxes` |
 | `timeout_s` | Hint for eyes; requesters also enforce their own wait |
 
-Eyes runs one YOLO + depth (+ Fast-SCNN for `traverse`) pass and publishes `robot/nav/scene`. Debug web **Capture** uses the same streamer path without requiring MQTT.
+Eyes runs one YOLO + depth (+ Fast-SCNN for `traverse`) pass and publishes `robot/nav/scene`. Eye **Capture** uses the same streamer path without requiring MQTT.
 
 ### `robot/nav/scene` payload
 
@@ -72,12 +72,21 @@ Prefix: `robot/play`.
 |-------|-----------|-------------|
 | `robot/play/cmd` | voice / tests → brain | Start or stop a behavior |
 | `robot/play/status` | brain → bus | Last mode, nudge, person range |
+| `robot/play/speeds` | Eye UI → brain | Live follow-turn / seek-turn / forward (retained JSON) |
 
 ```json
 { "mode": "follow" }
 ```
 
 `mode` is `follow` | `seek` | `idle` | `back` (`stop` is accepted as idle; `back` is one reverse nudge). See [movement.md](movement.md).
+
+Speeds (20–200) on `robot/play/speeds`:
+
+```json
+{ "follow_turn": 125, "seek_turn": 125, "forward": 105 }
+```
+
+Eye writes the same values to `brain/config/play.speeds` so they survive a brain restart.
 
 ## Debug logs
 
@@ -121,8 +130,8 @@ See [drive README](https://github.com/smart-puppet/drive) for UART mapping and F
 | `robot/nav/scene` | eyes | brain, play supervisor |
 | `robot/play/cmd` | brain voice | brain play supervisor |
 | `robot/play/status` | brain | logs, eyes debug UI |
-| `robot/log/brain` | brain | eyes debug web |
-| `robot/log/drive` | drive bridge | eyes debug web |
+| `robot/log/brain` | brain | Eye |
+| `robot/log/drive` | drive bridge | Eye |
 | `robot/drive/cmd` | eyes pad, drive pad, **brain face-speaker**, **brain play** | drive bridge |
 | `robot/drive/stop` | any UI | drive bridge |
 | `robot/drive/status` | drive bridge | eyes UI |

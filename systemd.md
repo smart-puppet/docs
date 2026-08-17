@@ -8,7 +8,7 @@ Start Mosquitto, the drive MQTT–UART bridge, eyes, and brain on boot. **Drive 
 |------|---------|--------|
 | `mosquitto.service` | MQTT broker (distro package) | network |
 | `puppet-drive.service` | `drive/host/mqtt_bridge.py` | `mosquitto` |
-| `puppet-eyes.service` | eyes debug web on **port 80** + `robot/nav/capture` | `mosquitto`, **`puppet-drive`** |
+| `puppet-eyes.service` | Eye on **port 80** + `robot/nav/capture` | `mosquitto`, **`puppet-drive`** |
 | `puppet-brain.service` | `puppet` voice | `mosquitto`, **`puppet-drive`**, `puppet-eyes` |
 | `puppet-mdns.service` | Avahi alias **`puppet.local`** | `avahi-daemon`, network |
 | `puppet.target` | pulls the Puppet units in | `mosquitto`, `puppet-drive` |
@@ -23,7 +23,7 @@ Unit files (edit `User=` and paths if the checkout is not `/home/cvincent/Projec
 | `deploy/systemd/puppet.target` | this repo |
 | `deploy/systemd/puppet-mdns.service` | this repo (`publish-puppet-mdns.sh`) |
 
-The drive debug pad is **not** a service. Use the pad on the eyes UI at **`http://puppet.local`** (systemd) or `http://127.0.0.1:8091` (manual `run_debug_web.sh`).
+The drive debug pad is **not** a service. Use the pad on Eye at **`http://puppet.local`** (systemd) or `http://127.0.0.1:8091` (manual `run_debug_web.sh`).
 
 ## Install
 
@@ -89,7 +89,7 @@ sudo systemctl restart puppet-eyes
 sudo systemctl restart puppet-drive
 ```
 
-Language changes from the eyes UI (`language.active`) apply on the **next brain start** — `sudo systemctl restart puppet-brain`.
+Language changes from Eye (`language.active`) apply on the **next brain start** — `sudo systemctl restart puppet-brain`. Follow/seek/forward speed sliders apply live.
 
 ## Open the debug UI (`http://puppet.local`)
 
@@ -142,7 +142,7 @@ Health:
 systemctl status puppet.target puppet-drive puppet-eyes puppet-brain puppet-mdns mosquitto --no-pager
 ```
 
-Eyes also mirrors `robot/log/brain` and `robot/log/drive` in the debug web log panes (`http://puppet.local`). Use the journal when the UI is down or a unit never reaches MQTT.
+Eyes also mirrors `robot/log/brain` and `robot/log/drive` in the Eye log panes (`http://puppet.local`). Use the journal when the UI is down or a unit never reaches MQTT.
 
 ## If something is wrong
 

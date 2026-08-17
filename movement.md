@@ -10,7 +10,7 @@ Same order as [architecture.md](architecture.md), plus play enabled in brain. On
 
 1. Mosquitto
 2. **drive** host bridge (MCU on UART)
-3. **eyes** debug web (must be in `traverse` / listening for `robot/nav/capture`)
+3. **eyes** Eye UI (must be in `traverse` / listening for `robot/nav/capture`)
 4. **brain** with `play.enabled: true` and `play.allow_motion: true`
 
 Clear estop if the pad or a previous stop latched it (`robot/drive/cmd` `{"cmd":"clear"}`).

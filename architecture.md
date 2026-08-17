@@ -29,10 +29,10 @@ flowchart TB
 
 ### eyes
 - Keep a live camera preview (debug UI).
-- On **manual Capture** (debug web) or **`robot/nav/capture`** (MQTT), run one YOLO + Depth Anything V2 Metric + Fast-SCNN pass.
+- On **manual Capture** (Eye) or **`robot/nav/capture`** (MQTT), run one YOLO + Depth Anything V2 Metric + Fast-SCNN pass.
 - Fuse into a traversability mask, BEV costmap, and a short `hint`.
 - Publish JSON on `robot/nav/scene` (echoes `req_id` when the capture was requested over MQTT).
-- Debug UI: `eyes/debug_web` (camera / boxes / traverse + Capture + drive pad + brain/drive logs).
+- Debug UI: `eyes/debug_web` — **Eye** (camera / boxes / traverse + Capture + drive pad + play speeds + brain/drive logs).
 
 ### drive
 - Host MQTT bridge → UART protocol.
@@ -51,7 +51,7 @@ Realtime traffic is **MQTT** (Mosquitto). Modules do not call each other over HT
 
 1. `mosquitto` (system service).
 2. `drive` host bridge (MCU on UART) — **must be up before eyes/brain**.
-3. `eyes` debug web (listens for `robot/nav/capture`; Capture button also works).
+3. `eyes` Eye UI (listens for `robot/nav/capture`; Capture button also works).
 4. `brain` (`puppet --config config/`) — talks with the child; Gemma tags start look / follow / seek.
 
 On the Jetson, [systemd.md](systemd.md) installs this order as `puppet.target` (`puppet-drive` starts first).

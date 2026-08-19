@@ -29,7 +29,7 @@ flowchart TB
 
 ### eyes
 - Keep a live camera preview (debug UI).
-- On **manual Capture** (Eye) or **`robot/nav/capture`** (MQTT), run one YOLO + Depth Anything V2 Metric + Fast-SCNN pass.
+- On **manual Capture** (Eye) or **`robot/nav/capture`** (MQTT), run one YOLO + Depth Anything V2 Metric pass.
 - Fuse into a traversability mask, BEV costmap, and a short `hint`.
 - Publish JSON on `robot/nav/scene` (echoes `req_id` when the capture was requested over MQTT).
 - Debug UI: `eyes/debug_web` — **Eye** (camera / boxes / traverse + Capture + drive pad + play speeds + brain/drive logs).
@@ -62,7 +62,6 @@ See [movement.md](movement.md) for the play roadmap. Not in step 1:
 
 - Costmap A* / DWA local planner
 - Robot-hides (no map / no “go to a corner” yet)
-- ADE / indoor-trained floor segmentation (Cityscapes Fast-SCNN is a stopgap)
 
 ## Build ingredients (not products)
 

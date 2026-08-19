@@ -27,7 +27,7 @@ All robot topics use the `robot/` prefix. Payload encoding is **JSON UTF-8** unl
 | `view` | `traverse` (default, publishes scene) or `boxes` |
 | `timeout_s` | Hint for eyes; requesters also enforce their own wait |
 
-Eyes runs one YOLO + depth (+ Fast-SCNN for `traverse`) pass and publishes `robot/nav/scene`. Eye **Capture** uses the same streamer path without requiring MQTT.
+Eyes runs one YOLO + depth pass and publishes `robot/nav/scene`. Floor for `traverse` is metric depth. Eye **Capture** uses the same streamer path without requiring MQTT.
 
 ### `robot/nav/scene` payload
 

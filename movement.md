@@ -49,7 +49,7 @@ Eyes still infers **on demand**. Follow rate is “as fast as one capture” (of
 
 | Mode | Voice | Motion |
 |------|-------|--------|
-| **follow** | Kid asks to come / follow; Gemma adds `<<follow>>`. Saying stop / halt / arrête while following idles immediately (does not wait for `<<stop>>`). | Turn toward YOLO `person` bearing; roll forward if centered and far; stop at `stop_m`. If the person leaves the camera, wait in place — do not spin toward last-voice DoA. |
+| **follow** | Kid asks to come / follow; Gemma adds `<<follow>>`. Saying stop / halt / arrête while following idles immediately (does not wait for `<<stop>>`). | Turn toward YOLO `person` bearing; roll forward if centered and far; stop at `stop_m`. If nobody is in view at start, spin in place for one full turn then say there is no one to follow. If a tracked person leaves the left or right of the frame, keep turning that way until they are back or 180°, then the same full-turn look, then give up. |
 | **seek** | Kid asks for hide-and-seek; Gemma adds `<<seek>>` | Turn in place until a person appears, then follow until `found_m`, then idle and say “found you”. Never roll toward last voice while lost. After `seek_giveup_ticks` with no person, idle and say it gave up. |
 | **idle** | Kid asks to stop; wheels idle at once if already in follow/seek. Gemma should still add `<<stop>>`. | Soft stop (`idle`), no estop latch |
 | **back** | Kid asks to reverse; Gemma adds `<<back>>` | One `backward` nudge, then idle |

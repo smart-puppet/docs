@@ -50,7 +50,7 @@ Eyes still infers **on demand**. Follow rate is “as fast as one capture” (of
 | Mode | Voice | Motion |
 |------|-------|--------|
 | **follow** | Kid asks to come / follow; Gemma adds `<<follow>>`. Saying stop / halt / arrête while following idles immediately (does not wait for `<<stop>>`). | Turn toward YOLO `person` bearing; roll forward if centered and far; stop at `stop_m`. If nobody is in view at start, spin in place for one full turn then say there is no one to follow. If a tracked person leaves the left or right of the frame, keep turning that way until they are back or 180°, then the same full-turn look, then give up. |
-| **seek** | Kid asks for hide-and-seek; Gemma adds `<<seek>>` | Count-out, then explore: one full-turn look, stamp a local occupancy map, face the next heading, then cruise straight until boxed in. Escape with reverse plus ~90° toward the freer side, then cruise again. If a tracked person leaves left/right, turn that way up to 180° then resume rolling. Follow until `found_m`, then idle and say “found you”. Never chase last-voice DoA. Give up after `seek_giveup_s` (or `seek_giveup_ticks`). |
+| **seek** | Kid asks for hide-and-seek; Gemma adds `<<seek>>` | Count-out, then explore: one full-turn look, stamp a local occupancy map, face the next heading, then cruise straight. A closed-ahead corner is a dead end — mark it and leave (U-turn if both sides are tight). If YOLO captures a person, chase with the same recover / approach as follow until `stop_m`, then idle and say “found you”. Never chase last-voice DoA. Give up after `seek_giveup_s` (or `seek_giveup_ticks`). |
 | **idle** | Kid asks to stop; wheels idle at once if already in follow/seek. Gemma should still add `<<stop>>`. | Soft stop (`idle`), no estop latch |
 | **back** | Kid asks to reverse; Gemma adds `<<back>>` | One `backward` nudge, then idle |
 
@@ -99,7 +99,7 @@ An adult should stay in the room. This is a kid robot, not a warehouse AGV.
 | `follow.forward_dur_ms` | `500` | Length of one roll |
 | `follow.backward_dur_ms` | `500` | Length of one reverse nudge |
 | `follow.turn_dur_ms` | `280` | Length of a bearing correction |
-| `follow.found_m` | `2.0` | Seek → “found” idle |
+| `follow.found_m` | `2.0` | Kept for compatibility; seek now “found” at `stop_m` like follow |
 | `follow.seek_giveup_s` | `180` | Seek → idle after this many seconds |
 | `follow.seek_giveup_ticks` | `240` | Seek → idle after this many lost captures (hard cap) |
 | `follow.seek_face_deg` | `90` | After the first look, turn this far toward the next heading |
